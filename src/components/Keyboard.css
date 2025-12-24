@@ -45,6 +45,15 @@
   background: linear-gradient(180deg, #e8a832 0%, #c89028 100%);
 }
 
+.white-key.pressed {
+  box-shadow: inset 0 0 0 3px #58c4ff;
+}
+
+.white-key.highlighted.pressed {
+  background: linear-gradient(180deg, #e8a832 0%, #c89028 100%);
+  box-shadow: inset 0 0 0 3px #58c4ff;
+}
+
 .black-key {
   width: 13%;
   height: 60%;
@@ -70,5 +79,14 @@
 
 .black-key.highlighted {
   background: linear-gradient(180deg, #e8a832 0%, #c89028 100%);
+}
+
+.black-key.pressed {
+  box-shadow: inset 0 0 0 3px #58c4ff;
+}
+
+.black-key.highlighted.pressed {
+  background: linear-gradient(180deg, #e8a832 0%, #c89028 100%);
+  box-shadow: inset 0 0 0 3px #58c4ff;
 }
 

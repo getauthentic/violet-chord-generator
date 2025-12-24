@@ -4,12 +4,13 @@ import './Keyboard.css';
 
 interface KeyboardProps {
   octave: number;
-  highlightedNotes: number[];
+  highlightedNotes: number[];  // Notes from the chord that's sounding
+  pressedNotes?: number[];     // Keys physically pressed (keyboard/mouse)
   onNoteOn: (note: number) => void;
   onNoteOff: (note: number) => void;
 }
 
-export function Keyboard({ octave, highlightedNotes, onNoteOn, onNoteOff }: KeyboardProps) {
+export function Keyboard({ octave, highlightedNotes, pressedNotes = [], onNoteOn, onNoteOff }: KeyboardProps) {
   const keyboardRef = useRef<HTMLDivElement>(null);
   const activeNotes = useRef<Set<number>>(new Set());
   const isMouseDown = useRef(false);
@@ -63,6 +64,17 @@ export function Keyboard({ octave, highlightedNotes, onNoteOn, onNoteOff }: Keyb
     return highlightedNotes.some(n => n % 12 === note);
   };
 
+  const isPressed = (note: number) => {
+    return pressedNotes.some(n => n % 12 === note);
+  };
+
+  const getKeyClass = (baseClass: string, note: number) => {
+    const classes = [baseClass];
+    if (isHighlighted(note)) classes.push('highlighted');
+    if (isPressed(note)) classes.push('pressed');
+    return classes.join(' ');
+  };
+
   // Black key positions relative to white keys
   const blackKeyIndices = [0, 1, 3, 4, 5];
 
@@ -72,7 +84,7 @@ export function Keyboard({ octave, highlightedNotes, onNoteOn, onNoteOff }: Keyb
         {WHITE_KEYS.map((note) => (
           <div
             key={`white-${note}`}
-            className={`white-key ${isHighlighted(note) ? 'highlighted' : ''}`}
+            className={getKeyClass('white-key', note)}
             data-note={note}
             onMouseDown={handleMouseDown(note)}
             onMouseUp={handleMouseUp(note)}
@@ -83,7 +95,7 @@ export function Keyboard({ octave, highlightedNotes, onNoteOn, onNoteOff }: Keyb
         {BLACK_KEYS.map((note, i) => (
           <div
             key={`black-${note}`}
-            className={`black-key ${isHighlighted(note) ? 'highlighted' : ''}`}
+            className={getKeyClass('black-key', note)}
             data-note={note}
             style={{ left: `${(blackKeyIndices[i] + 0.7) * (100 / 7)}%` }}
             onMouseDown={(e) => { e.stopPropagation(); handleMouseDown(note)(e); }}

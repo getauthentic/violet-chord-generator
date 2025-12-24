@@ -33,6 +33,7 @@ interface DeviceProps {
   selectedMidiOutput: string;
   // Audio state
   highlightedNotes: number[];
+  pressedNotes: number[];
   chordName: string;
   chordNotes: string;
   // Callbacks
@@ -138,6 +139,7 @@ export function Device(props: DeviceProps) {
           <Keyboard
             octave={props.octave}
             highlightedNotes={props.highlightedNotes}
+            pressedNotes={props.pressedNotes}
             onNoteOn={props.onNoteOn}
             onNoteOff={props.onNoteOff}
           />

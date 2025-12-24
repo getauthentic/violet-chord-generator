@@ -18,8 +18,10 @@ export default function App() {
   const [showHelp, setShowHelp] = useState(false);
   const [showMidiMapping, setShowMidiMapping] = useState(false);
   const [effects, setEffects] = useState({ reverb: 0, delay: 0, chorus: 0, drive: 0, master: 80 });
+  const [pressedMidiNotes, setPressedMidiNotes] = useState<number[]>([]);
   
   const heldNotes = useRef<Set<string>>(new Set());
+  const heldMidiNotes = useRef<Set<number>>(new Set()); // Track MIDI notes being held
   const heldModifiers = useRef<Set<string>>(new Set());
   const heldMidiMappings = useRef<Set<MidiMappableAction>>(new Set());
   const voicingInterval = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -116,6 +118,13 @@ export default function App() {
       return; // Note was handled as a mapping
     }
     
+    // Track this note as being held
+    heldMidiNotes.current.add(note);
+    setPressedMidiNotes(Array.from(heldMidiNotes.current));
+    
+    // Auto-enable poly mode when multiple keys are held simultaneously
+    const usePolyMode = synthState.polyMode || heldMidiNotes.current.size > 1;
+    
     // Normal chord playing
     const result = audio.playChord(
       note,
@@ -128,7 +137,7 @@ export default function App() {
       synthState.keyMode,
       velocity ?? 0.8,
       (n, v, on) => on ? midi.sendNoteOn(n, v) : midi.sendNoteOff(n),
-      synthState.polyMode
+      usePolyMode
     );
     setChordDisplay(result);
   }, [synthState, audio, midiMapping, executeMappedAction]);
@@ -141,7 +150,17 @@ export default function App() {
       return;
     }
     
-    const remainingNotes = audio.releaseChord(note, (n, _, on) => on ? midi.sendNoteOn(n, 0) : midi.sendNoteOff(n), synthState.polyMode);
+    // Check if we were in auto-poly mode before removing this note
+    const wasAutoPolyMode = heldMidiNotes.current.size > 1;
+    
+    // Remove this note from held notes
+    heldMidiNotes.current.delete(note);
+    setPressedMidiNotes(Array.from(heldMidiNotes.current));
+    
+    // Use poly mode release if we were in poly mode (explicit or auto)
+    const usePolyMode = synthState.polyMode || wasAutoPolyMode;
+    
+    const remainingNotes = audio.releaseChord(note, (n, _, on) => on ? midi.sendNoteOn(n, 0) : midi.sendNoteOff(n), usePolyMode);
     // Always update display with remaining notes (empty array clears display)
     setChordDisplay({ notes: remainingNotes, name: '' });
   }, [audio, synthState.polyMode, midiMapping, executeMappedAction]);
@@ -277,6 +296,8 @@ export default function App() {
         e.preventDefault();
         audio.panic();
         drums.stop();
+        heldMidiNotes.current.clear();
+        setPressedMidiNotes([]);
         setChordDisplay({ notes: [], name: '' });
         return;
       }
@@ -401,6 +422,7 @@ export default function App() {
         selectedMidiInput={midi.selectedInput}
         selectedMidiOutput={midi.selectedOutput}
         highlightedNotes={chordDisplay.notes}
+        pressedNotes={pressedMidiNotes}
         chordName={displayChordName}
         chordNotes={chordNotesDisplay}
         onChordTypeChange={synthState.setChordType}
