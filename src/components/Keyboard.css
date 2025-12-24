@@ -1,0 +1,74 @@
+.keyboard-section {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  margin-right: 0;
+  border-radius: 0 0 24px 0;
+  overflow: hidden;
+}
+
+.keyboard {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+}
+
+.white-key {
+  flex: 1;
+  height: 100%;
+  background: linear-gradient(180deg, #4a4a4a 0%, #3a3a3a 100%);
+  border: 1px solid #2a2a2a;
+  border-bottom: none;
+  border-right: none;
+  border-radius: 0;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  transition: all 0.08s ease;
+}
+
+.white-key:last-of-type {
+  border-right: 1px solid #2a2a2a;
+}
+
+.white-key:hover {
+  background: linear-gradient(180deg, #5a5a5a 0%, #4a4a4a 100%);
+}
+
+.white-key:active,
+.white-key.active {
+  background: linear-gradient(180deg, #3a3a3a 0%, #2a2a2a 100%);
+}
+
+.white-key.highlighted {
+  background: linear-gradient(180deg, #e8a832 0%, #c89028 100%);
+}
+
+.black-key {
+  width: 13%;
+  height: 60%;
+  background: linear-gradient(180deg, #5a5a5a 0%, #4a4a4a 100%);
+  border-radius: 0 0 4px 4px;
+  cursor: pointer;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  transition: all 0.08s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  transform: translateX(-50%);
+}
+
+.black-key:hover {
+  background: linear-gradient(180deg, #6a6a6a 0%, #5a5a5a 100%);
+}
+
+.black-key:active,
+.black-key.active {
+  background: linear-gradient(180deg, #4a4a4a 0%, #3a3a3a 100%);
+}
+
+.black-key.highlighted {
+  background: linear-gradient(180deg, #e8a832 0%, #c89028 100%);
+}
+

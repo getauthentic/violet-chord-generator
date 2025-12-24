@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<!--
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║   🌸 VIOLET - A Web-Based Chord Generator 🌸                                  ║
+║                                                                               ║
+║   Hey there friend!                                                           ║
+║                                                                               ║
+║   This is Nate Siggard, creator of Violet. Thanks for checking out the code! ║
+║                                                                               ║
+║   Fun fact: Claude Opus 4.5 made this entire thing. Isn't it sweet?           ║
+║   We pair-programmed the whole project together - from the chord logic        ║
+║   to the synth engines to this beautiful UI that looks like the hardware      ║
+║   it's inspired by.                                                           ║
+║                                                                               ║
+║   This project is a love letter to the Telepathic Instruments Orchid -        ║
+║   an incredible chord-generating synthesizer that I discovered too late       ║
+║   to buy. Rather than wait around, I decided to build my own web version.     ║
+║   If you're from Telepathic Instruments and you're reading this:              ║
+║   I'm a huge fan and would love to collaborate! Don't be mad at me! 🙏        ║
+║                                                                               ║
+║   ─────────────────────────────────────────────────────────────────────────   ║
+║                                                                               ║
+║   Check out more of my work:                                                  ║
+║                                                                               ║
+║   🎨 Personal Site:    https://NateSiggard.com                                ║
+║   🚀 Creative Studio:  https://getAuthentic.com                               ║
+║                                                                               ║
+║   ─────────────────────────────────────────────────────────────────────────   ║
+║                                                                               ║
+║   Tech Stack:                                                                 ║
+║   • Tone.js for Web Audio synthesis                                           ║
+║   • Web MIDI API for hardware controller support                              ║
+║   • React + TypeScript + Vite                                                 ║
+║   • CSS that makes it look like actual hardware                               ║
+║                                                                               ║
+║   Features:                                                                   ║
+║   • 50+ Synth Presets                                                         ║
+║   • Chord generation with Dim/Min/Maj/Sus types                               ║
+║   • Extensions: 6th, m7, M7, 9th (combine them!)                              ║
+║   • Performance modes: Strum, Arp, Harp, Slop                                 ║
+║   • Effects: Reverb, Delay, Chorus, Drive                                     ║
+║   • Drum machine with 20 patterns                                             ║
+║   • MIDI In/Out support                                                       ║
+║   • Computer keyboard as a full instrument                                    ║
+║                                                                               ║
+║   Built with respect, admiration, and a mass of espresso.                    ║
+║                                                                               ║
+║   - Nate ✌️                                                                   ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+-->
+<html lang="en">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GXYFHR4N37"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-GXYFHR4N37');
+    </script>
+    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0" />
+    <title>Violet - Web-Based Chord Generator Synth</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Violet is a free web-based chord generator synthesizer inspired by Telepathic Instruments Orchid. Play beautiful chords with your keyboard, featuring multiple synth engines, effects, arpeggiation, and MIDI support.">
+    <meta name="keywords" content="chord generator, synthesizer, web synth, music production, chord progression, Telepathic Instruments, Orchid, web audio, MIDI, arpeggiator, music tool, online synth, chord machine">
+    <meta name="author" content="Nate Siggard">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta name="theme-color" content="#1a1a1a">
+    <link rel="canonical" href="https://violet.getauthentic.com">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://violet.getauthentic.com">
+    <meta property="og:title" content="Violet - Web-Based Chord Generator Synth">
+    <meta property="og:description" content="A free browser-based chord generator inspired by Telepathic Instruments Orchid. Play beautiful chords instantly with your keyboard. Features 50+ synth presets, effects, arpeggiation, and MIDI support.">
+    <meta property="og:image" content="https://violet.getauthentic.com/thumbnail.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Violet Chord Generator - A sleek synthesizer interface with golden accents">
+    <meta property="og:site_name" content="Violet by Authentic Creative">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://violet.getauthentic.com">
+    <meta name="twitter:title" content="Violet - Web-Based Chord Generator Synth">
+    <meta name="twitter:description" content="A free browser-based chord generator inspired by Telepathic Instruments Orchid. Play beautiful chords with 50+ synth presets, effects & MIDI support.">
+    <meta name="twitter:image" content="https://violet.getauthentic.com/thumbnail.png">
+    <meta name="twitter:image:alt" content="Violet Chord Generator - A sleek synthesizer interface">
+    <meta name="twitter:creator" content="@natesiggard">
+    <meta name="twitter:site" content="@getauthentic">
+    
+    <!-- Apple/iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Violet">
+    <link rel="apple-touch-icon" href="https://violet.getauthentic.com/apple-touch-icon.png">
+    
+    <!-- Microsoft -->
+    <meta name="msapplication-TileColor" content="#1a1a1a">
+    <meta name="msapplication-config" content="none">
+    
+    <!-- Structured Data / JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Violet",
+        "description": "A free web-based chord generator synthesizer inspired by Telepathic Instruments Orchid",
+        "url": "https://violet.getauthentic.com",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript and Web Audio API",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "Nate Siggard",
+            "url": "https://natesiggard.com"
+        },
+        "creator": {
+            "@type": "Organization",
+            "name": "Authentic Creative",
+            "url": "https://getauthentic.com"
+        },
+        "keywords": "chord generator, synthesizer, web synth, music production, MIDI"
+    }
+    </script>
+    <script type="module" crossorigin src="/assets/index-Div6mQjX.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Cah1YzZf.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

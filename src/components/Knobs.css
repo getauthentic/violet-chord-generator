@@ -1,0 +1,141 @@
+.knobs-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 12px;
+  gap: 8px;
+}
+
+.knob-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.knob-label {
+  font-size: 0.5rem;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: right;
+  line-height: 1.2;
+}
+
+.knob {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #3a3a3a 0%, #1a1a1a 100%);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.05);
+  position: relative;
+  cursor: grab;
+}
+
+.knob:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.05), 0 0 15px rgba(232, 168, 50, 0.2);
+}
+
+.knob.small {
+  width: 45px;
+  height: 45px;
+}
+
+.knob-indicator {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform-origin: 50% 30px;
+  width: 4px;
+  height: 18px;
+  background: #e8a832;
+  border-radius: 2px;
+  margin-left: -2px;
+}
+
+.knob.small .knob-indicator {
+  top: 6px;
+  width: 3px;
+  height: 12px;
+  margin-left: -1.5px;
+  transform-origin: 50% 16px;
+}
+
+.knob-value {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 600;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Mobile Knob Modal */
+.knob-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  padding: 40px;
+  gap: 30px;
+}
+
+.knob-modal.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.knob-modal-title {
+  font-size: 1.2rem;
+  color: #c4a870;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.knob-modal-value {
+  font-size: 3rem;
+  color: #fff;
+  font-weight: 700;
+}
+
+.knob-modal-slider {
+  width: 80%;
+  max-width: 300px;
+  height: 12px;
+  -webkit-appearance: none;
+  background: #333;
+  border-radius: 6px;
+  outline: none;
+}
+
+.knob-modal-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 36px;
+  height: 36px;
+  background: #e8a832;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.knob-modal-close {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ccc;
+  padding: 12px 32px;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.knob-modal-close:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+

@@ -1,0 +1,156 @@
+/* Top header */
+.top-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  z-index: 2000;
+}
+
+.logo {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #c4a870;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.info-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #666;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 2000;
+}
+
+.info-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+/* Info bar */
+.info-bar {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: #555;
+}
+
+.controls-btn {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  font-size: 0.75rem;
+  color: #666;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.controls-btn:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: #333;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #444;
+}
+
+.status-dot.active {
+  background: #4caf50;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+}
+
+/* GitHub CTA */
+.github-cta {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.github-cta-text {
+  font-size: 0.7rem;
+  color: #888;
+  letter-spacing: 0.02em;
+}
+
+.github-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #24292e;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 1px solid #444;
+}
+
+.github-btn:hover {
+  background: #2f363d;
+  border-color: #666;
+  transform: translateY(-1px);
+}
+
+.github-btn svg {
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .github-cta {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .top-header {
+    justify-content: flex-start;
+    padding: 12px 15px;
+  }
+  .top-header .logo {
+    width: 80px !important;
+  }
+  .info-btn {
+    position: fixed;
+    top: auto;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2000;
+  }
+}
+
