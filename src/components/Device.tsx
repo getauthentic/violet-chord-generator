@@ -54,6 +54,9 @@ interface DeviceProps {
   onNoteOn: (note: number) => void;
   onNoteOff: (note: number) => void;
   onShowHelp: () => void;
+  onShowMidiMapping: () => void;
+  midiMappingEnabled: boolean;
+  midiMappingCount: number;
 }
 
 export function Device(props: DeviceProps) {
@@ -107,6 +110,9 @@ export function Device(props: DeviceProps) {
           polyMode={props.polyMode}
           onPolyModeChange={props.onPolyModeChange}
           onShowHelp={props.onShowHelp}
+          onShowMidiMapping={props.onShowMidiMapping}
+          midiMappingEnabled={props.midiMappingEnabled}
+          midiMappingCount={props.midiMappingCount}
           chordName={props.chordName}
           chordNotes={props.chordNotes}
           keyIndicator={keyIndicator}

@@ -42,6 +42,9 @@ interface ControlRowProps {
   polyMode: boolean;
   onPolyModeChange: (enabled: boolean) => void;
   onShowHelp: () => void;
+  onShowMidiMapping: () => void;
+  midiMappingEnabled: boolean;
+  midiMappingCount: number;
   // Chord display
   chordName: string;
   chordNotes: string;
@@ -239,11 +242,14 @@ export function ControlRow(props: ControlRowProps) {
 
         {/* MIDI */}
         <div className="btn-with-label">
-          <button className="menu-btn dark" onClick={toggleMenu('midi')} />
+          <button 
+            className={`menu-btn dark ${props.midiMappingCount > 0 && props.midiMappingEnabled ? 'active' : ''}`} 
+            onClick={toggleMenu('midi')} 
+          />
           <span className="btn-label">MIDI</span>
           <div className="tooltip">MIDI Settings</div>
           {openMenu === 'midi' && (
-            <div className="effects-panel visible" style={{ minWidth: 220 }}>
+            <div className="effects-panel visible" style={{ minWidth: 240 }}>
               <div className="effect-row" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: 6 }}>
                 <span className="effect-label">MIDI Input</span>
                 <select
@@ -269,6 +275,22 @@ export function ControlRow(props: ControlRowProps) {
                     <option key={output.id} value={output.id}>{output.name}</option>
                   ))}
                 </select>
+              </div>
+              <div className="option-divider" style={{ margin: '14px 0' }} />
+              <button 
+                className="midi-mapping-btn"
+                onClick={() => { props.onShowMidiMapping(); setOpenMenu(null); }}
+              >
+                <span>🎛️</span>
+                <span>Pad Mapping</span>
+                {props.midiMappingCount > 0 && (
+                  <span className={`mapping-badge ${props.midiMappingEnabled ? 'enabled' : ''}`}>
+                    {props.midiMappingCount}
+                  </span>
+                )}
+              </button>
+              <div className="option-hint" style={{ marginTop: 8 }}>
+                Map MIDI pads to chord types &amp; extensions
               </div>
             </div>
           )}

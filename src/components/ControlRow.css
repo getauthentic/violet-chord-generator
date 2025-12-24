@@ -416,3 +416,43 @@
 
 .btn-with-label:hover .tooltip { opacity: 1; }
 
+/* MIDI Mapping Button */
+.midi-mapping-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 14px;
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.15), rgba(138, 43, 226, 0.05));
+  border: 1px solid rgba(138, 43, 226, 0.3);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.midi-mapping-btn:hover {
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.25), rgba(138, 43, 226, 0.1));
+  border-color: rgba(138, 43, 226, 0.5);
+}
+
+.midi-mapping-btn span:first-child {
+  font-size: 1.1rem;
+}
+
+.mapping-badge {
+  margin-left: auto;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.mapping-badge.enabled {
+  background: rgba(138, 43, 226, 0.4);
+  color: #e0c0ff;
+}
+

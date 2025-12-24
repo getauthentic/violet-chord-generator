@@ -1,12 +1,14 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Device } from './components/Device';
 import { StartOverlay, AboutModal, HelpModal, RotateOverlay } from './components/Modals';
+import { MidiMappingModal } from './components/MidiMappingModal';
 import { useAudio } from './hooks/useAudio';
 import { useDrums } from './hooks/useDrums';
 import { useMidi } from './hooks/useMidi';
+import { useMidiMapping } from './hooks/useMidiMapping';
 import { useSynthState } from './hooks/useSynthState';
 import { KEYBOARD_MAP } from './constants/music';
-import type { ChordType, Extension } from './types';
+import type { ChordType, Extension, MidiMappableAction } from './types';
 import './App.css';
 
 export default function App() {
@@ -14,17 +16,107 @@ export default function App() {
   const [isStartReopened, setIsStartReopened] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [showMidiMapping, setShowMidiMapping] = useState(false);
   const [effects, setEffects] = useState({ reverb: 0, delay: 0, chorus: 0, drive: 0, master: 80 });
   
   const heldNotes = useRef<Set<string>>(new Set());
   const heldModifiers = useRef<Set<string>>(new Set());
+  const heldMidiMappings = useRef<Set<MidiMappableAction>>(new Set());
   const voicingInterval = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const synthState = useSynthState();
   const audio = useAudio();
   const drums = useDrums();
+  const midiMapping = useMidiMapping();
   
+  // Execute a mapped MIDI action
+  const executeMappedAction = useCallback((action: MidiMappableAction, isOn: boolean) => {
+    switch (action) {
+      case 'chordMaj':
+        if (isOn) {
+          heldMidiMappings.current.add(action);
+          synthState.setChordType(2);
+        } else {
+          heldMidiMappings.current.delete(action);
+          if (!Array.from(heldMidiMappings.current).some(a => a.startsWith('chord'))) {
+            synthState.setChordType(null);
+          }
+        }
+        break;
+      case 'chordMin':
+        if (isOn) {
+          heldMidiMappings.current.add(action);
+          synthState.setChordType(1);
+        } else {
+          heldMidiMappings.current.delete(action);
+          if (!Array.from(heldMidiMappings.current).some(a => a.startsWith('chord'))) {
+            synthState.setChordType(null);
+          }
+        }
+        break;
+      case 'chordDim':
+        if (isOn) {
+          heldMidiMappings.current.add(action);
+          synthState.setChordType(0);
+        } else {
+          heldMidiMappings.current.delete(action);
+          if (!Array.from(heldMidiMappings.current).some(a => a.startsWith('chord'))) {
+            synthState.setChordType(null);
+          }
+        }
+        break;
+      case 'chordAug':
+        if (isOn) {
+          heldMidiMappings.current.add(action);
+          synthState.setChordType(3);
+        } else {
+          heldMidiMappings.current.delete(action);
+          if (!Array.from(heldMidiMappings.current).some(a => a.startsWith('chord'))) {
+            synthState.setChordType(null);
+          }
+        }
+        break;
+      case 'ext6':
+        synthState.setExtension('6', isOn);
+        break;
+      case 'extm7':
+        synthState.setExtension('m7', isOn);
+        break;
+      case 'extM7':
+        synthState.setExtension('M7', isOn);
+        break;
+      case 'ext9':
+        synthState.setExtension('9', isOn);
+        break;
+      case 'octaveUp':
+        if (isOn) synthState.setOctave(synthState.octave + 1);
+        break;
+      case 'octaveDown':
+        if (isOn) synthState.setOctave(synthState.octave - 1);
+        break;
+      case 'voicingUp':
+        if (isOn) synthState.setVoicing(synthState.voicing + 1);
+        break;
+      case 'voicingDown':
+        if (isOn) synthState.setVoicing(synthState.voicing - 1);
+        break;
+    }
+  }, [synthState]);
+
   const handleNoteOn = useCallback((note: number, velocity?: number) => {
+    // Check if in learn mode first
+    if (midiMapping.processMidiForLearn(note)) {
+      return; // Note was consumed for learning
+    }
+    
+    // Check if this note is mapped to an action
+    const action = midiMapping.getActionForNote(note);
+    if (action) {
+      executeMappedAction(action, true);
+      return; // Note was handled as a mapping
+    }
+    
+    // Normal chord playing
     const result = audio.playChord(
       note,
       synthState.chordType,
@@ -39,13 +131,20 @@ export default function App() {
       synthState.polyMode
     );
     setChordDisplay(result);
-  }, [synthState, audio]);
+  }, [synthState, audio, midiMapping, executeMappedAction]);
 
   const handleNoteOff = useCallback((note: number) => {
+    // Check if this note is mapped to an action
+    const action = midiMapping.getActionForNote(note);
+    if (action) {
+      executeMappedAction(action, false);
+      return;
+    }
+    
     const remainingNotes = audio.releaseChord(note, (n, _, on) => on ? midi.sendNoteOn(n, 0) : midi.sendNoteOff(n), synthState.polyMode);
     // Always update display with remaining notes (empty array clears display)
     setChordDisplay({ notes: remainingNotes, name: '' });
-  }, [audio, synthState.polyMode]);
+  }, [audio, synthState.polyMode, midiMapping, executeMappedAction]);
 
   const midi = useMidi(handleNoteOn, handleNoteOff);
 
@@ -261,6 +360,20 @@ export default function App() {
 
       <AboutModal visible={showAbout} onClose={() => setShowAbout(false)} />
       <HelpModal visible={showHelp} onClose={() => setShowHelp(false)} />
+      <MidiMappingModal
+        visible={showMidiMapping}
+        enabled={midiMapping.config.enabled}
+        learnMode={midiMapping.learnMode}
+        lastMidiNote={midiMapping.lastMidiNote}
+        getMappingForAction={midiMapping.getMappingForAction}
+        getNoteLabel={midiMapping.getNoteLabel}
+        onStartLearn={midiMapping.startLearn}
+        onCancelLearn={midiMapping.cancelLearn}
+        onRemoveMapping={midiMapping.removeMapping}
+        onClearAll={midiMapping.clearAllMappings}
+        onSetEnabled={midiMapping.setEnabled}
+        onClose={() => setShowMidiMapping(false)}
+      />
 
       <Device
         chordType={synthState.chordType}
@@ -304,6 +417,9 @@ export default function App() {
         onNoteOn={handleNoteOn}
         onNoteOff={handleNoteOff}
         onShowHelp={handleShowHelp}
+        onShowMidiMapping={() => setShowMidiMapping(true)}
+        midiMappingEnabled={midiMapping.config.enabled}
+        midiMappingCount={midiMapping.config.mappings.length}
       />
 
       <div className="info-bar">

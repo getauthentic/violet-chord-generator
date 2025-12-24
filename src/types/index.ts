@@ -75,3 +75,22 @@ export interface PresetCategory {
   presets: { value: PresetName; label: string }[];
 }
 
+// MIDI Mapping types
+export type MidiMappableAction = 
+  | 'chordMaj' | 'chordMin' | 'chordDim' | 'chordAug'
+  | 'ext6' | 'extM7' | 'extm7' | 'ext9'
+  | 'octaveUp' | 'octaveDown'
+  | 'voicingUp' | 'voicingDown';
+
+export interface MidiMapping {
+  note: number;
+  channel?: number; // Optional: filter by channel
+  action: MidiMappableAction;
+  deviceId?: string; // Optional: filter by device
+}
+
+export interface MidiMappingConfig {
+  mappings: MidiMapping[];
+  enabled: boolean;
+}
+
