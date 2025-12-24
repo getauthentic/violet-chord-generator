@@ -143,6 +143,8 @@ export function useAudio() {
     
     const activeExts = Object.entries(extensions).filter(([, v]) => v).map(([k]) => k);
     if (activeExts.length === 0) return name;
+    // Like the real Orchid: too many extensions = ???
+    if (activeExts.length === 4) return '???';
     if (activeExts.length >= 3) return `${name}<sup>JAZZ</sup>`;
     if (chordType === 2 && activeExts.includes('m7') && activeExts.length === 1) return `${name}<sup>7</sup>`;
     
@@ -342,7 +344,9 @@ export function useAudio() {
     }
     
     // Return all active notes when in poly mode for display
-    return { notes: polyMode ? allActiveNotes : notes, name };
+    // Include active chord count for "WTF" display when 2+ chords layered
+    const activeChordCount = activeChordsRef.current.size;
+    return { notes: polyMode ? allActiveNotes : notes, name, activeChordCount };
   }, [stopCurrentChord, quantizeToScale, generateChord, getChordName, stopArp]);
 
   const releaseChord = useCallback((rootMidi: number, midiOutputCallback?: (note: number, velocity: number, isOn: boolean) => void, polyMode = false): number[] => {
@@ -413,6 +417,11 @@ export function useAudio() {
     Tone.Transport.bpm.value = bpm;
   }, []);
 
+  // Get the count of active chords (for poly mode display)
+  const getActiveChordCount = useCallback(() => {
+    return activeChordsRef.current.size;
+  }, []);
+
   return {
     isInitialized: state.isInitialized,
     currentRoot: state.currentRoot,
@@ -430,6 +439,7 @@ export function useAudio() {
     getChordName,
     generateChord,
     stopArp,
+    getActiveChordCount,
   };
 }
 

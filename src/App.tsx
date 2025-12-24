@@ -148,7 +148,7 @@ export default function App() {
 
   const midi = useMidi(handleNoteOn, handleNoteOff);
 
-  const [chordDisplay, setChordDisplay] = useState<{ notes: number[]; name: string }>({ notes: [], name: '' });
+  const [chordDisplay, setChordDisplay] = useState<{ notes: number[]; name: string; activeChordCount?: number }>({ notes: [], name: '' });
 
   const handleStart = useCallback(async () => {
     await audio.initialize();
@@ -337,6 +337,11 @@ export default function App() {
   }, [synthState, audio, drums, handleNoteOn, handleNoteOff]);
 
   const chordNotesDisplay = chordDisplay.notes.map(n => audio.midiToNoteName(n)).join(' · ');
+  
+  // Like the real Orchid: "WTF" when 2+ chords are layered in poly mode
+  const displayChordName = (chordDisplay.activeChordCount && chordDisplay.activeChordCount >= 2) 
+    ? 'WTF' 
+    : chordDisplay.name;
 
   return (
     <>
@@ -396,7 +401,7 @@ export default function App() {
         selectedMidiInput={midi.selectedInput}
         selectedMidiOutput={midi.selectedOutput}
         highlightedNotes={chordDisplay.notes}
-        chordName={chordDisplay.name}
+        chordName={displayChordName}
         chordNotes={chordNotesDisplay}
         onChordTypeChange={synthState.setChordType}
         onExtensionToggle={synthState.toggleExtension}
