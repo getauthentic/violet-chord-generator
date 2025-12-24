@@ -4,123 +4,118 @@
   inset: 0;
   background: rgba(0, 0, 0, 0.95);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  gap: 24px;
-  overflow-y: auto;
-  padding: 40px 20px;
+  padding: 20px;
+}
+
+.tutorial-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 28px 32px;
+  max-width: 700px;
+  width: 100%;
+  position: relative;
+}
+
+.tutorial-card h1 {
+  font-size: 2rem;
+  font-weight: 300;
+  font-style: italic;
+  color: #c4a870;
+  text-align: center;
+  margin: 0 0 20px 0;
 }
 
 .tutorial-close {
-  position: fixed;
-  top: 20px;
-  right: 20px;
+  position: absolute;
+  top: 16px;
+  right: 16px;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #fff;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   cursor: pointer;
-  display: none;
   z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 .tutorial-close:hover {
   background: rgba(255, 255, 255, 0.2);
 }
 
-.start-overlay.reopened .tutorial-close {
-  display: block !important;
-}
-
-.start-overlay.reopened .start-btn {
-  display: none;
-}
-
-.start-overlay h1 {
-  font-size: 3rem;
-  font-weight: 300;
-  font-style: italic;
-  color: #c4a870;
-}
-
-/* Tutorial Container */
-.tutorial-container {
-  max-width: 680px;
-  width: 100%;
+.tutorial-content {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
 }
 
-.tutorial-section {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 24px;
+.tutorial-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.tutorial-section-title {
-  font-size: 0.7rem;
+.row-label {
+  font-size: 0.65rem;
   color: #e8a832;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  margin-bottom: 16px;
+  letter-spacing: 0.1em;
   font-weight: 600;
+  min-width: 45px;
 }
 
 /* Modifier Keys Row */
 .modifier-row {
   display: flex;
-  justify-content: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.modifier-group {
-  display: flex;
-  gap: 6px;
-}
-
-.modifier-group + .modifier-group {
-  margin-left: 16px;
+  gap: 4px;
 }
 
 .mod-key {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 3px;
 }
 
 .mod-key-cap {
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   background: linear-gradient(180deg, #e8a832 0%, #c89028 100%);
-  border-radius: 8px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #1a1a1a;
-  box-shadow: 0 3px 8px rgba(232, 168, 50, 0.3);
+  box-shadow: 0 2px 6px rgba(232, 168, 50, 0.3);
 }
 
 .mod-key-label {
-  font-size: 0.7rem;
-  color: #999;
+  font-size: 0.6rem;
+  color: #888;
   font-weight: 500;
 }
 
 /* Piano Keyboard Visual */
+.piano-row {
+  padding: 8px 0;
+}
+
 .piano-visual {
   position: relative;
-  height: 140px;
+  height: 90px;
   display: flex;
   justify-content: center;
 }
@@ -131,16 +126,16 @@
 }
 
 .piano-white-key {
-  width: 52px;
-  height: 120px;
+  width: 38px;
+  height: 80px;
   background: linear-gradient(180deg, #4a4a4a 0%, #3a3a3a 100%);
   border: 1px solid #2a2a2a;
-  border-radius: 0 0 6px 6px;
+  border-radius: 0 0 5px 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  padding-bottom: 8px;
+  padding-bottom: 6px;
   margin-right: -1px;
   position: relative;
 }
@@ -151,8 +146,8 @@
 
 .piano-black-key {
   position: absolute;
-  width: 36px;
-  height: 72px;
+  width: 26px;
+  height: 48px;
   background: linear-gradient(180deg, #5a5a5a 0%, #3a3a3a 100%);
   border-radius: 0 0 4px 4px;
   top: 0;
@@ -161,80 +156,82 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  padding-bottom: 6px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  padding-bottom: 4px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
 }
 
 .key-computer {
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   color: #fff;
 }
 
 .key-note {
-  font-size: 0.6rem;
+  font-size: 0.5rem;
   color: #888;
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
 .piano-black-key .key-computer {
-  font-size: 0.85rem;
+  font-size: 0.7rem;
 }
 
 .piano-black-key .key-note {
-  font-size: 0.55rem;
+  font-size: 0.45rem;
   color: #777;
 }
 
 /* Other Controls */
-.controls-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px 20px;
+.controls-row {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .control-item {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 4px;
 }
 
 .control-keys {
   display: flex;
-  gap: 3px;
+  gap: 2px;
 }
 
 .ctrl-key {
   background: #3a3a3a;
   border: 1px solid #555;
-  padding: 4px 8px;
+  padding: 3px 6px;
   border-radius: 4px;
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   font-weight: 600;
   color: #ccc;
-  min-width: 28px;
+  min-width: 22px;
   text-align: center;
 }
 
-.ctrl-key.wide {
-  min-width: 50px;
-}
-
 .control-label {
-  font-size: 0.75rem;
-  color: #888;
+  font-size: 0.6rem;
+  color: #666;
 }
 
 .start-btn {
+  display: block;
+  margin: 20px auto 0;
   background: linear-gradient(180deg, #e8a832 0%, #c89028 100%);
   color: #1a1a1a;
   border: none;
-  padding: 16px 48px;
-  font-size: 1rem;
+  padding: 14px 40px;
+  font-size: 0.95rem;
   font-weight: 600;
   border-radius: 30px;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(232, 168, 50, 0.3);
+  box-shadow: 0 6px 20px rgba(232, 168, 50, 0.3);
   transition: transform 0.2s ease;
 }
 
@@ -419,65 +416,64 @@
 
 /* Mobile landscape tutorial */
 @media (max-height: 500px) {
-  .start-overlay {
-    padding: 20px;
-    justify-content: flex-start;
+  .tutorial-card {
+    padding: 16px 20px;
   }
-  .start-overlay h1 {
-    font-size: 1.8rem;
-    margin-bottom: 10px;
+  .tutorial-card h1 {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
   }
-  .tutorial-container {
-    flex-direction: row;
-    flex-wrap: wrap;
-    max-width: 100%;
-    gap: 12px;
-    justify-content: center;
-  }
-  .tutorial-section {
-    padding: 12px;
-    flex: 1 1 280px;
-    max-width: 320px;
-  }
-  .tutorial-section-title {
-    font-size: 0.6rem;
-    margin-bottom: 10px;
+  .tutorial-content {
+    gap: 10px;
   }
   .mod-key-cap {
     width: 28px;
     height: 28px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
   .mod-key-label {
-    font-size: 0.55rem;
+    font-size: 0.5rem;
   }
-  .piano-container {
-    height: 60px;
+  .piano-visual {
+    height: 65px;
   }
   .piano-white-key {
-    width: 28px;
+    width: 30px;
+    height: 58px;
   }
-  .key-computer, .key-note {
-    font-size: 0.55rem;
+  .piano-black-key {
+    width: 20px;
+    height: 36px;
   }
-  .ctrl-key {
-    padding: 4px 8px;
+  .key-computer {
     font-size: 0.65rem;
   }
-  .control-label {
+  .key-note {
+    font-size: 0.4rem;
+  }
+  .ctrl-key {
+    padding: 2px 5px;
     font-size: 0.6rem;
+    min-width: 18px;
+  }
+  .control-label {
+    font-size: 0.5rem;
   }
   .start-btn {
-    padding: 12px 32px;
-    font-size: 0.9rem;
-    margin-top: 10px;
+    padding: 10px 28px;
+    font-size: 0.85rem;
+    margin-top: 12px;
   }
   .tutorial-close {
     top: 10px;
     right: 10px;
-    width: 32px;
-    height: 32px;
-    font-size: 1.2rem;
+    width: 30px;
+    height: 30px;
+    font-size: 1.1rem;
+  }
+  .row-label {
+    font-size: 0.55rem;
+    min-width: 35px;
   }
 }
 

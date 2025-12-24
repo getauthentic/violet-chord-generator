@@ -442,7 +442,7 @@ export default function App() {
         </div>
         <div className="info-item">{synthState.bpm} BPM</div>
         <div className="info-item">Oct {synthState.octave}</div>
-        <button className="info-item controls-btn" onClick={() => setShowHelp(true)}>? Controls</button>
+        <button className="info-item controls-btn" onClick={handleShowHelp}>? Controls</button>
       </div>
 
       <div className="github-cta">

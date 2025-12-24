@@ -10,19 +10,25 @@ interface StartOverlayProps {
 export function StartOverlay({ visible, isReopened, onStart, onClose }: StartOverlayProps) {
   if (!visible) return null;
 
+  const handleClose = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onClose();
+  };
+
   return (
-    <div className={`start-overlay ${isReopened ? 'reopened' : ''}`}>
-      {isReopened && (
-        <button className="tutorial-close" onClick={onClose}>×</button>
-      )}
-      <h1>Violet</h1>
-      
-      <div className="tutorial-container">
-        {/* Chord Types & Extensions */}
-        <div className="tutorial-section">
-          <div className="tutorial-section-title">Hold to modify chords</div>
-          <div className="modifier-row">
-            <div className="modifier-group">
+    <div className={`start-overlay ${isReopened ? 'reopened' : ''}`} onClick={isReopened ? handleClose : undefined}>
+      <div className="tutorial-card" onClick={e => e.stopPropagation()}>
+        {isReopened && (
+          <button className="tutorial-close" onClick={handleClose}>×</button>
+        )}
+        <h1>Violet</h1>
+        
+        {/* All controls in one compact card */}
+        <div className="tutorial-content">
+          {/* Chord Modifiers */}
+          <div className="tutorial-row">
+            <span className="row-label">Chords</span>
+            <div className="modifier-row">
               {['1', '2', '3', '4'].map((key, i) => (
                 <div key={key} className="mod-key">
                   <div className="mod-key-cap">{key}</div>
@@ -30,7 +36,8 @@ export function StartOverlay({ visible, isReopened, onStart, onClose }: StartOve
                 </div>
               ))}
             </div>
-            <div className="modifier-group">
+            <span className="row-label">Ext</span>
+            <div className="modifier-row">
               {['5', '6', '7', '8'].map((key, i) => (
                 <div key={key} className="mod-key">
                   <div className="mod-key-cap">{key}</div>
@@ -39,46 +46,42 @@ export function StartOverlay({ visible, isReopened, onStart, onClose }: StartOve
               ))}
             </div>
           </div>
-        </div>
 
-        {/* Piano Keyboard */}
-        <div className="tutorial-section">
-          <div className="tutorial-section-title">Play notes</div>
-          <div className="piano-visual">
-            <div className="piano-container">
-              {[['A', 'C'], ['S', 'D'], ['D', 'E'], ['F', 'F'], ['G', 'G'], ['H', 'A'], ['J', 'B']].map(([comp, note]) => (
-                <div key={comp} className="piano-white-key">
-                  <span className="key-computer">{comp}</span>
-                  <span className="key-note">{note}</span>
-                </div>
-              ))}
-              {[['W', 'C#', 34], ['E', 'D#', 86], ['T', 'F#', 190], ['Y', 'G#', 242], ['U', 'A#', 294]].map(([comp, note, left]) => (
-                <div key={comp as string} className="piano-black-key" style={{ left: `${left}px` }}>
-                  <span className="key-computer">{comp}</span>
-                  <span className="key-note">{note}</span>
-                </div>
-              ))}
+          {/* Piano Keys */}
+          <div className="tutorial-row piano-row">
+            <span className="row-label">Notes</span>
+            <div className="piano-visual">
+              <div className="piano-container">
+                {[['A', 'C'], ['S', 'D'], ['D', 'E'], ['F', 'F'], ['G', 'G'], ['H', 'A'], ['J', 'B']].map(([comp, note]) => (
+                  <div key={comp} className="piano-white-key">
+                    <span className="key-computer">{comp}</span>
+                    <span className="key-note">{note}</span>
+                  </div>
+                ))}
+                {[['W', 'C#', 25], ['E', 'D#', 62], ['T', 'F#', 137], ['Y', 'G#', 175], ['U', 'A#', 212]].map(([comp, note, left]) => (
+                  <div key={comp as string} className="piano-black-key" style={{ left: `${left}px` }}>
+                    <span className="key-computer">{comp}</span>
+                    <span className="key-note">{note}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Other Controls */}
-        <div className="tutorial-section">
-          <div className="tutorial-section-title">Other Controls</div>
-          <div className="controls-grid">
+          {/* Other Controls - compact grid */}
+          <div className="tutorial-row controls-row">
             {[
               { keys: ['Z', 'X'], label: 'Voicing' },
               { keys: ['[', ']'], label: 'Octave' },
               { keys: ['-', '='], label: 'BPM' },
               { keys: ['L'], label: 'Loop' },
-              { keys: [',', '.'], label: 'Drum Pattern' },
-              { keys: ['Space'], label: 'Panic', wide: true },
-              { keys: ['Esc'], label: 'Close Menus' },
-            ].map(({ keys, label, wide }) => (
+              { keys: [',', '.'], label: 'Patterns' },
+              { keys: ['Space'], label: 'Panic' },
+            ].map(({ keys, label }) => (
               <div key={label} className="control-item">
                 <div className="control-keys">
                   {keys.map(k => (
-                    <span key={k} className={`ctrl-key ${wide ? 'wide' : ''}`}>{k}</span>
+                    <span key={k} className="ctrl-key">{k}</span>
                   ))}
                 </div>
                 <span className="control-label">{label}</span>
@@ -87,21 +90,10 @@ export function StartOverlay({ visible, isReopened, onStart, onClose }: StartOve
           </div>
         </div>
 
-        {/* Drum Machine */}
-        <div className="tutorial-section">
-          <div className="tutorial-section-title">Drum Machine (20 Patterns)</div>
-          <div style={{ color: '#ccc', fontSize: '0.85rem', lineHeight: 1.7 }}>
-            <p style={{ margin: '0 0 10px 0' }}><strong style={{ color: '#e8a832' }}>1.</strong> Press <strong style={{ color: '#fff' }}>L</strong> or click Loop to open the drum pattern selector</p>
-            <p style={{ margin: '0 0 10px 0' }}><strong style={{ color: '#e8a832' }}>2.</strong> Choose from 20 patterns: Rock, Funk, Hip-Hop, Jazz, EDM, Trap, and more</p>
-            <p style={{ margin: '0 0 10px 0' }}><strong style={{ color: '#e8a832' }}>3.</strong> Use <strong style={{ color: '#fff' }}>, .</strong> keys to cycle through patterns while playing</p>
-            <p style={{ margin: 0, color: '#888', fontSize: '0.8rem' }}>Press <strong>L</strong> again to stop drums. Use <strong>Metronome</strong> for a simple click track.</p>
-          </div>
-        </div>
+        {!isReopened && (
+          <button className="start-btn" onClick={onStart}>Click to Start</button>
+        )}
       </div>
-
-      {!isReopened && (
-        <button className="start-btn" onClick={onStart}>Click to Start</button>
-      )}
     </div>
   );
 }
