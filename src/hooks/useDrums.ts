@@ -24,6 +24,9 @@ export function useDrums() {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentPattern, setCurrentPattern] = useState(0);
+  
+  // Ref for pattern so the interval can access the latest value
+  const currentPatternRef = useRef(0);
 
   const initialize = useCallback(() => {
     const drumGain = new Tone.Gain(0.5).toDestination();
@@ -92,12 +95,18 @@ export function useDrums() {
   const startLoop = useCallback((bpm: number, patternIndex?: number) => {
     stopLoop();
     
-    const pattern = DRUM_PATTERNS[patternIndex ?? currentPattern];
+    // Update ref if specific pattern provided
+    if (patternIndex !== undefined) {
+      currentPatternRef.current = patternIndex;
+    }
+    
     const beatDuration = (60 / bpm) * 1000;
     const sixteenthNote = beatDuration / 4;
     let currentBeat = 1;
 
+    // Look up pattern dynamically so changes take effect immediately
     const playDrumsForBeat = (beat: number) => {
+      const pattern = DRUM_PATTERNS[currentPatternRef.current];
       pattern.pattern.forEach(([b, type]) => {
         if (Math.abs(b - beat) < 0.05) playHit(type);
       });
@@ -112,7 +121,7 @@ export function useDrums() {
     }, sixteenthNote);
 
     setIsPlaying(true);
-  }, [currentPattern, playHit, stopLoop]);
+  }, [playHit, stopLoop]);
 
   const stop = useCallback(() => {
     stopLoop();
@@ -122,11 +131,13 @@ export function useDrums() {
   const cyclePattern = useCallback((direction: 1 | -1) => {
     setCurrentPattern(prev => {
       const next = (prev + direction + DRUM_PATTERNS.length) % DRUM_PATTERNS.length;
+      currentPatternRef.current = next; // Update ref for seamless switching
       return next;
     });
   }, []);
 
   const selectPattern = useCallback((index: number) => {
+    currentPatternRef.current = index; // Update ref for seamless switching
     setCurrentPattern(index);
   }, []);
 
