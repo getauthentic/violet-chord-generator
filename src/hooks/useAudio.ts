@@ -209,13 +209,18 @@ export function useAudio() {
     const notes = generateChord(adjustedRoot, chordType, extensions, voicing);
     const name = getChordName(adjustedRoot, chordType, extensions);
     
+    // For strum2oct, we need to track the octave-up notes too
+    const notesToStore = performMode === 'strum2oct' 
+      ? [...notes, ...notes.map(n => n + 12)]
+      : notes;
+    
     // Store under ORIGINAL rootMidi (not adjustedRoot) so release can find it
     // Update active chords ref synchronously for immediate return
     if (polyMode) {
-      activeChordsRef.current.set(rootMidi, notes);
+      activeChordsRef.current.set(rootMidi, notesToStore);
     } else {
       activeChordsRef.current.clear();
-      activeChordsRef.current.set(rootMidi, notes);
+      activeChordsRef.current.set(rootMidi, notesToStore);
     }
     
     // Get all active notes for display
@@ -225,10 +230,10 @@ export function useAudio() {
     setState(s => {
       if (polyMode) {
         const newActiveChords = new Map(s.activeChords);
-        newActiveChords.set(rootMidi, notes);
+        newActiveChords.set(rootMidi, notesToStore);
         return { ...s, currentRoot: rootMidi, currentChordNotes: allActiveNotes, activeChords: newActiveChords };
       }
-      return { ...s, currentRoot: rootMidi, currentChordNotes: notes, activeChords: new Map([[rootMidi, notes]]) };
+      return { ...s, currentRoot: rootMidi, currentChordNotes: notesToStore, activeChords: new Map([[rootMidi, notesToStore]]) };
     });
     
     const playChords = bassMode !== 'solo';
