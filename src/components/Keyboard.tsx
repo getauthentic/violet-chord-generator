@@ -12,9 +12,11 @@ interface KeyboardProps {
 export function Keyboard({ octave, highlightedNotes, onNoteOn, onNoteOff }: KeyboardProps) {
   const keyboardRef = useRef<HTMLDivElement>(null);
   const activeNotes = useRef<Set<number>>(new Set());
+  const isMouseDown = useRef(false);
 
   const handleMouseDown = (note: number) => (e: React.MouseEvent) => {
     e.preventDefault();
+    isMouseDown.current = true;
     const midiNote = (octave + 1) * 12 + note;
     activeNotes.current.add(midiNote);
     onNoteOn(midiNote);
@@ -36,8 +38,20 @@ export function Keyboard({ octave, highlightedNotes, onNoteOn, onNoteOff }: Keyb
     }
   };
 
+  // Handle drag-to-play: when mouse enters a key while button is held
+  const handleMouseEnter = (note: number) => (e: React.MouseEvent) => {
+    if (isMouseDown.current && e.buttons === 1) {
+      const midiNote = (octave + 1) * 12 + note;
+      if (!activeNotes.current.has(midiNote)) {
+        activeNotes.current.add(midiNote);
+        onNoteOn(midiNote);
+      }
+    }
+  };
+
   useEffect(() => {
     const handleGlobalMouseUp = () => {
+      isMouseDown.current = false;
       activeNotes.current.forEach(note => onNoteOff(note));
       activeNotes.current.clear();
     };
@@ -63,6 +77,7 @@ export function Keyboard({ octave, highlightedNotes, onNoteOn, onNoteOff }: Keyb
             onMouseDown={handleMouseDown(note)}
             onMouseUp={handleMouseUp(note)}
             onMouseLeave={handleMouseLeave(note)}
+            onMouseEnter={handleMouseEnter(note)}
           />
         ))}
         {BLACK_KEYS.map((note, i) => (
@@ -74,6 +89,7 @@ export function Keyboard({ octave, highlightedNotes, onNoteOn, onNoteOff }: Keyb
             onMouseDown={(e) => { e.stopPropagation(); handleMouseDown(note)(e); }}
             onMouseUp={(e) => { e.stopPropagation(); handleMouseUp(note)(); }}
             onMouseLeave={handleMouseLeave(note)}
+            onMouseEnter={(e) => { e.stopPropagation(); handleMouseEnter(note)(e); }}
           />
         ))}
       </div>
