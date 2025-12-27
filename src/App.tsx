@@ -359,8 +359,8 @@ export default function App() {
 
   const chordNotesDisplay = chordDisplay.notes.map(n => audio.midiToNoteName(n)).join(' · ');
   
-  // Like the real Orchid: "WTF" when 2+ chords are layered in poly mode
-  const displayChordName = (chordDisplay.activeChordCount && chordDisplay.activeChordCount >= 2) 
+  // Like the real Orchid: "WTF" when 2+ actual chords are layered (modifier + multiple keys)
+  const displayChordName = (chordDisplay.activeChordCount && chordDisplay.activeChordCount >= 2 && synthState.chordType !== null) 
     ? 'WTF' 
     : chordDisplay.name;
 

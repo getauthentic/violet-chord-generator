@@ -13,15 +13,17 @@ This project is a tribute to the incredible Orchid hardware synthesizer. I could
 ## Features
 
 - **One-finger chords** — Press a single key to play full chords
-- **Chord types** — Diminished, Minor, Major, Suspended (hold 1-4)
+- **Chord types** — Diminished, Minor, Major, Augmented (hold 1-4)
 - **Extensions** — 6th, m7, M7, 9th (hold 5-8)
 - **Chord voicing** — Cycle through inversions (Z/X keys)
-- **50+ synth presets** — Keys, organs, pads, leads, bass, and atmospheres
+- **45 synth presets** — Keys, organs, pads, leads, bass, strings, brass, plucks, and atmospheres
 - **Bass modes** — Unison, single, or solo bass notes
 - **12 bass voices** — Sub, round, warm, pluck, growl, and more
 - **Effects** — Reverb, tape delay, chorus, drive
-- **Drum machine** — 20 patterns (rock, funk, hip-hop, jazz, etc.)
+- **Drum machine** — 21 patterns (rock, funk, hip-hop, jazz, EDM, trap, etc.)
 - **MIDI support** — Input from controllers, output to DAWs/hardware
+- **MIDI mapping** — Map controller buttons to chord types, extensions, and controls
+- **Poly mode** — Layer multiple chords simultaneously
 - **Responsive** — Works on desktop and mobile (landscape)
 
 ## Keyboard Controls
@@ -34,7 +36,7 @@ This project is a tribute to the incredible Orchid hardware synthesizer. I could
 - **1** — Diminished
 - **2** — Minor  
 - **3** — Major
-- **4** — Suspended
+- **4** — Augmented
 
 ### Extensions (hold)
 - **5** — 6th
@@ -61,14 +63,17 @@ This creates different inversions of the same chord while keeping its harmonic f
 
 ## Getting Started
 
-1. Open `index.html` in a modern browser
-2. Click "Click to Start" to initialize audio
-3. Hold a chord type (1-4) and press a note key to play chords
-4. Experiment with extensions, voicings, and sounds!
+```bash
+npm install
+npm run dev
+```
+
+Then open the local URL in your browser, click "Click to Start" to initialize audio, and start playing!
 
 ## Tech Stack
 
-- Pure HTML/CSS/JavaScript (no build step)
+- [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/) for dev/build
 - [Tone.js](https://tonejs.github.io/) for audio synthesis
 - Web MIDI API for controller support
 
@@ -102,4 +107,3 @@ This is a fan project built out of admiration for the Orchid. It's not affiliate
 ## License
 
 MIT — Do whatever you want with it. Just don't sue me.
-
